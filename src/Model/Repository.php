@@ -21,9 +21,9 @@ abstract class Repository
 
         try
         {
-            $pdo = new \PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
+            $this->pdo = new \PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
 
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e)
         {
@@ -33,6 +33,6 @@ abstract class Repository
 
     protected function getPDO()
     {
-        return $this->pdo = $pdo;
+        return $this->pdo;
     }
 }
