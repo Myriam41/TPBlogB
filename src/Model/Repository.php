@@ -18,22 +18,21 @@ abstract class Repository
         $this->db_user = $user;
         $this->db_pass = $password;
         $this->db_host = $host;
-    }
 
-    protected function getPDO()
-    {
         try
         {
-            $pdo = new PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
+            $pdo = new \PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
 
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $this->pdo = $pdo;
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e)
         {
             die('Echec lors de la connexion : '.$e->getMessage());
         }
+    }
 
+    protected function getPDO()
+    {
+        return $this->pdo = $pdo;
     }
 }
