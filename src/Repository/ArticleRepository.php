@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 use PDO;
-require_once ('../src/Model/Repository.php');
-
 use App\Model\Repository;
 
 class ArticleRepository extends Repository
@@ -11,8 +9,7 @@ class ArticleRepository extends Repository
     public function getArticles()
     {
         // récupération des 10 derniers posts avec préparation de la requête pourquoi déjà ?
-        $req = $this->getPDO()->query('SELECT title FROM post');
-        var_dump ($req);
+        $req = $this->db->query('SELECT title FROM post');
         $articles = [];
 // les donnée sont transmisent sous forme d'objet
         while ($article = $req->fetchAll(PDO::FETCH_OBJ))

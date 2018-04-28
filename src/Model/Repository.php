@@ -6,24 +6,15 @@ use PDO;
 // class abstraite pour qu'elle ne soit pas instenciée. Seulement ses filles doivent pouvoir l'être.
 abstract class Repository
 {
-    protected $db_name;
-    protected $db_user;
-    protected $db_pass;
-    protected $db_host;
-    protected $pdo;
+    protected $db;
 
-    public function __contruct($name, $host, $user, $password)
+    public function __contructs()
     {
-        $this->$db_name = $name;
-        $this->db_user = $user;
-        $this->db_pass = $password;
-        $this->db_host = $host;
-
         try
         {
-            $this->pdo = new \PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
+            $this->db = new \PDO('mysql:dbname=tpblog;host=localhost;charset=utf8', 'root', '' );
 
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e)
         {
@@ -33,6 +24,6 @@ abstract class Repository
 
     protected function getPDO()
     {
-        return $this->pdo;
+        return $this->db;
     }
 }
