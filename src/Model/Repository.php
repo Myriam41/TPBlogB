@@ -8,7 +8,7 @@ abstract class Repository
 {
     protected $db;
 
-    public function __constructs()
+    public function __construct()
     {
         try
         {
