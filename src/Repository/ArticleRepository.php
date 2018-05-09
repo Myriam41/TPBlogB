@@ -1,44 +1,55 @@
 <?php
 
 namespace App\Repository;
-use PDO;
+
 use App\Model\Repository;
+use App\Entity\Article;
+
+/**
+ * Class ArticleRepository extend Repository
+ * functions to retreive data from articles
+ */
 
 class ArticleRepository extends Repository
 {
-    public function getArticles()
+    /**
+     * retreive the last 10 articles
+     * @return $articles
+     */
+    public function getByLimit()
     {
-        // récupération des 10 derniers posts avec préparation de la requête pourquoi déjà ?
-        $req = $this->db->query('SELECT title FROM post');
+        $req = $this->getDb()->query('SELECT * FROM post ORDER BY createdAt LIMIT 0, 10');
         $articles = [];
-// les donnée sont transmisent sous forme d'objet
-        while ($article = $req->fetchAll(PDO::FETCH_OBJ))
-        {
-            $articles[] = new Article($article);
-        }
-    
-        return $articles;
 
-        $articles->closeCursor();
+        // les donnée sont transmisent sous forme d'objet
+        while ($dataRaw = $req->fetch())
+        {
+            $articles[] = new Article($dataRaw);
+        }
+        
+        $req->closeCursor();
+        return $articles;
     }
     
-    public function getArticle($articleID)
+    /**
+     * @param int $articleId retreive one article
+     * @return 
+     */
+    public function getOneById($articleId)
     {
         // recherche de l'article demandé
-        $req = $this->db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'d/m/Y à H/i/s\' AS date_creation_fr FROM post WHERE id = ?');
+        $req = $this->getDb()->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'d/m/Y à H/i/s\' AS date_creation_fr FROM post WHERE id = ?');
         $req->execute(array($articleID));
-        $article = [];
+        $data = $req->fetch();
 
-        while ($article = $req->fetch())
-        {
-            $article[] = new Article($article);
-        }
-    
-        return $article;
 
-        $article->closeCursor();
+        return new Article($data);
+     
     }
 
+     /**
+     * @param int retreive all articles
+     */
     public function allArticles()
     {
 
