@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use App\Repository\ArticleRepository;
 
+/**
+ * Class Articlecontroller
+ */
+
 class ArticleController
 {
     // ce sont des actions de controller
@@ -12,7 +16,7 @@ class ArticleController
     //intensiation de la class ArticleRepository $articleRepository devient un objet
         $articleRepository = new ArticleRepository();
     // j'appelle la fonction voulu de l'objet
-        $articles = $articleRepository->getArticles();
+        $articles = $articleRepository->getByLimit();
 
         require('../src/View/article_list.php');
     }
