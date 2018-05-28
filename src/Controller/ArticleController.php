@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
+use App\Repository\Commentrepository;
 
 /**
  * Class Articlecontroller
@@ -10,25 +11,38 @@ use App\Repository\ArticleRepository;
 
 class ArticleController
 {
-    // ce sont des actions de controller
+    /**
+     * La function crée des occuraeces pour obtenir la liste des 10 derniers articles
+     *
+     * @var $articles
+     */
     public function listArticles()
     {
-    //intensiation de la class ArticleRepository $articleRepository devient un objet
+        //intensiation de la class ArticleRepository $articleRepository devient un objet
         $articleRepository = new ArticleRepository();
-    // j'appelle la fonction voulu de l'objet
+        // j'appelle la fonction voulu de l'objet
         $articles = $articleRepository->getByLimit();
-
-        require('../src/View/article_list.php');
+        require '../src/View/article_list.php';
     }
     
+    /**
+     * La function crée des occurences pour obtenir un article avec ses commentaires
+     *
+     * @var $article and contents
+     */
     public function article()
     {
+        $articleId = $_GET['id'];
         $articleRepository = new ArticleRepository();
-        $article = $articleRepository->getArticle($_GET['id']);
+
+        if (!empty($articlesId)) {
+            $article = $articleRepository->getOneById($articleId);
+        }
 
         $commentRepository = new CommentRepository();
-        $comments = $commentRepository->getComments($_GET['id']);
-    
-        require('../src/View/articleView.php');
+        if (!empty($articleId)) {
+            $commentRepository->getByArticleId($articleId);
+        }
+        require '../src/View/articleView.php';
     }
 }
