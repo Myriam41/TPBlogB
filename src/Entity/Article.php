@@ -4,8 +4,8 @@ namespace App\Entity;
 
 /**
  * Class Article
- * 
- * Les attribus de la class sont private pour que la class ne puisse pas perdre sont identité. 
+ *
+ * Les attribus de la class sont private pour que la class ne puisse pas perdre sont identité.
  * Ils sont utilisables grâce aux getters
  */
 
@@ -46,7 +46,10 @@ class Article
      */
     public function __construct($data)
     {
-        $this->hydrate($data);
+        if (isset($data))
+        {
+            $this->hydrate($data);
+        }
     }
 
     /**
@@ -56,59 +59,50 @@ class Article
     {
     
         /**
-         * if $data is an array. The value of each column is retrieved 
+         * if $data is an array. The value of each column is retrieved
          */
-        if(is_array($data))
-        {
-            if (isset($data['id']))
-            {   
+        if (is_array($data)) {
+            if (isset($data['id'])) {
                 /**
                  * hydration id
-                 * I call my function with this. 
+                 * I call my function with this.
                  */
                 $this->setId($data['id']);
             }
              
-            if (isset($data['title']))
-            {
+            if (isset($data['title'])) {
                 /**
                  * hydration title
                  */
                 $this->setTitle($data['title']);
             }
             
-            if (isset($data['content']))
-            {
+            if (isset($data['content'])) {
                 /**
                  * hydration content
                  */
-                $this->setContent($data['content']);
+                $this->setcontent($data['content']);
             }
 
-            if (isset($data['introduction']))
-            {
-                 /**
-                 * hydration introduction
-                 */
+            if (isset($data['introduction'])) {
+                /**
+                * hydration introduction
+                */
                 $this->setIntroduction($data['introduction']);
             }
 
-            if (isset($data['createAt']))
-            {
-                 /**
-                 * hydration createAt
-                 */
+            if (isset($data['createAt'])) {
+                /**
+                * hydration createAt
+                */
                 $this->setcreateAt($data['createAt']);
             }
 
-            if (isset($data['updateAt']))
-            {
-                 /**
-                 * hydration UpdateAt
-                 */
+            if (isset($data['updateAt'])) {
+                // hydration UpdateAt
                 $this->setUpdateAt(['updateAt']);
             }
-        }  
+        }
     }
 
     /**
@@ -127,9 +121,9 @@ class Article
         $this->id = $id;
     }
 
-     /**
-     * @return string title
-     */
+    /**
+    * @return string title
+    */
     public function getTitle()
     {
         return $this->title;
@@ -143,9 +137,9 @@ class Article
         $this->title = $title;
     }
 
-     /**
-     * @return string introduction
-     */
+    /**
+    * @return string introduction
+    */
     public function getIntroduction()
     {
         return $this->introduction;
@@ -164,13 +158,13 @@ class Article
      */
     public function getcontent()
     {
-        return $this->createdAt;
+        return $this->content;
     }
 
     /**
      * @param string $content
      */
-    public function setContent($content)
+    public function setcontent($content)
     {
         $this->content = $content;
     }
@@ -186,15 +180,15 @@ class Article
     /**
      * @param int $createAt
      */
-    public function setcreateAt($createAt)
+    public function setCreateAt($createAt)
     {
         $this->createAt = $createAt;
     }
 
-     /**
-     * @return int updateAt
-     */
-    public function getupdateAt()
+    /**
+    * @return int updateAt
+    */
+    public function getUpdateAt()
     {
         return $this->updateAt;
     }
@@ -202,7 +196,7 @@ class Article
     /**
      * @param int $undateAt
      */
-    public function setupdateAt($updateAt)
+    public function setUpdateAt($updateAt)
     {
         $this->updateAt = $updateAt;
     }
