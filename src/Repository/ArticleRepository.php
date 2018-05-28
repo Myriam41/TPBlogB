@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Model\Repository;
 use App\Entity\Article;
+use \PDO;
 
 /**
  * Class ArticleRepository extend Repository
@@ -13,45 +14,70 @@ use App\Entity\Article;
 class ArticleRepository extends Repository
 {
     /**
-     * retreive the last 10 articles
-     * @return $articles
+     * @function retreive the last 10 articles
+     * @return $articles qui est un tableau
      */
     public function getByLimit()
     {
-        $req = $this->getDb()->query('SELECT * FROM post ORDER BY createdAt LIMIT 0, 10');
-        $articles = [];
-
-        // les donnée sont transmisent sous forme d'objet
-        while ($dataRaw = $req->fetch())
-        {
-            $articles[] = new Article($dataRaw);
-        }
+        try {
+            $db = $this->getDb();
+         }
+        catch(PDOException $e)
+            {
+                die('Echec lors de la connexion : '.$e->getMessage());
+            }
         
+        
+            $req = $db->prepare('SELECT * FROM post ORDER BY createdAt LIMIT 0, 10');
+            $req->execute();
+            $articles = [];
+
+            // les donnée sont transmisent sous forme d'objet
+            while ($dataRaw = $req->fetch()) {
+                $articles[] = new Article($dataRaw);
+            }
+       
         $req->closeCursor();
         return $articles;
+        print($articles);
     }
     
     /**
+     * La fonction renvoie un seul article suivant id demandé
      * @param int $articleId retreive one article
-     * @return 
+     * @return $onearticle
      */
     public function getOneById($articleId)
     {
+        $db = $this->getDb();
+
+        $articleId = $_GET['id'];
+
         // recherche de l'article demandé
-        $req = $this->getDb()->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'d/m/Y à H/i/s\' AS date_creation_fr FROM post WHERE id = ?');
-        $req->execute(array($articleID));
-        $data = $req->fetch();
+        $reqSelect = 'SELECT id, title,introduction, content, DATE_FORMAT(createdAt, \'d/m/Y à H/i/s\') AS date_creation_fr, DATE_FORMAT(updateAt, \'d/m/Y à H/i/s\') AS date_update_fr ';
+        $reqFrom = 'FROM post';
+        $reqWhere = ' WHERE id = :articleId';
+        $req = $db->prepare($reqSelect . $reqFrom . $reqWhere);
+        $req->bindParam('articleId', $articleId, \PDO::PARAM_INT);
+        $req->execute();
+        
+        $onearticle = [];
+        
+        // les donnée sont transmisent sous forme d\'objet
+        while ($data = $req->fetch()) {
+            $onearticle[] = new Article($data);
+        }
+   
+        $req->closeCursor();
+        return $onearticle;
+        print($onearticle);
 
-
-        return new Article($data);
-     
     }
 
-     /**
-     * @param int retreive all articles
+    /**
+     * Function pour obtenir tous les articles
      */
     public function allArticles()
     {
-
     }
 }
